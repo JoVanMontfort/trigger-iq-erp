@@ -1,0 +1,135 @@
+@startuml
+title TriggerIQ ERP - Data Model (ERD) with Blockchain
+
+entity Product {
+  *id : UUID
+  *name : String
+  *sku : String
+  *description : Text
+  *unitPrice : Decimal
+  *quantity : Integer
+  *minStockThreshold : Integer
+  *createdAt : Timestamp
+  *updatedAt : Timestamp
+}
+
+entity InventoryTransaction {
+  *id : UUID
+  *productId : UUID
+  *type : Enum [RECEIPT, SHIPMENT, ADJUSTMENT]
+  *quantity : Integer
+  *timestamp : DateTime
+  *blockchainHash : String
+}
+
+entity Customer {
+  *id : UUID
+  *name : String
+  *email : String
+  *phone : String
+  *address : String
+}
+
+entity "Order" as Order {
+  *id : UUID
+  *customerId : UUID
+  *status : Enum [PENDING, PROCESSING, SHIPPED, DELIVERED]
+  *totalAmount : Decimal
+  *createdAt : Timestamp
+  *updatedAt : Timestamp
+  *blockchainHash : String
+}
+
+entity OrderItem {
+  *id : UUID
+  *orderId : UUID
+  *productId : UUID
+  *quantity : Integer
+  *unitPrice : Decimal
+}
+
+entity Invoice {
+  *id : UUID
+  *orderId : UUID
+  *amount : Decimal
+  *status : Enum [UNPAID, PAID, OVERDUE]
+  *issueDate : Date
+  *dueDate : Date
+  *blockchainHash : String
+}
+
+entity Payment {
+  *id : UUID
+  *invoiceId : UUID
+  *amount : Decimal
+  *paymentDate : Date
+  *method : Enum [BANK_TRANSFER, CREDIT_CARD, CRYPTO]
+}
+
+entity Employee {
+  *id : UUID
+  *firstName : String
+  *lastName : String
+  *email : String
+  *phone : String
+  *role : Enum [WAREHOUSE, SALES, FINANCE, HR, PRODUCTION]
+  *hireDate : Date
+  *salary : Decimal
+}
+
+entity Timesheet {
+  *id : UUID
+  *employeeId : UUID
+  *date : Date
+  *hoursWorked : Decimal
+}
+
+entity WorkOrder {
+  *id : UUID
+  *productId : UUID
+  *quantity : Integer
+  *status : Enum [PLANNED, IN_PROGRESS, COMPLETED]
+  *scheduledStart : DateTime
+  *scheduledEnd : DateTime
+  *blockchainHash : String
+}
+
+entity Supplier {
+  *id : UUID
+  *name : String
+  *email : String
+  *phone : String
+  *address : String
+  *paymentTerms : String
+}
+
+entity PurchaseOrder {
+  *id : UUID
+  *supplierId : UUID
+  *status : Enum [PENDING, SENT, RECEIVED, CLOSED]
+  *totalAmount : Decimal
+  *blockchainHash : String
+}
+
+entity PurchaseOrderItem {
+  *id : UUID
+  *purchaseOrderId : UUID
+  *productId : UUID
+  *quantity : Integer
+  *unitPrice : Decimal
+}
+
+' Relationships
+Product ||--o{ InventoryTransaction : "has"
+Customer ||--o{ Order : "places"
+Order ||--o{ OrderItem : "contains"
+Product ||--o{ OrderItem : "is"
+Order ||--o{ Invoice : "generates"
+Invoice ||--o{ Payment : "receives"
+Employee ||--o{ Timesheet : "logs"
+Product ||--o{ WorkOrder : "produces"
+Supplier ||--o{ PurchaseOrder : "supplies"
+PurchaseOrder ||--o{ PurchaseOrderItem : "contains"
+Product ||--o{ PurchaseOrderItem : "is"
+
+@enduml
