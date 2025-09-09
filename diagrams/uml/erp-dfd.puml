@@ -1,0 +1,42 @@
+@startuml
+title TriggerIQ ERP - Data Flow Diagram (DFD)
+
+' External entities
+actor Customer
+actor Supplier
+actor FinanceDept
+
+' System processes
+rectangle "ERP System" {
+  [Inventory Module]
+  [Sales Module]
+  [Finance Module]
+  [AI/ML Module]
+}
+
+' Data stores
+database "ERP Database\n(PostgreSQL)" as DB
+collections "Blockchain Ledger\n(Hyperledger/Ethereum)" as BC
+
+' Data Flows
+Customer --> [Sales Module] : Place Order
+[Sales Module] --> [Inventory Module] : Check stock
+[Inventory Module] --> DB : Read/Update stock
+[Sales Module] --> DB : Record order
+[Sales Module] --> BC : Record transaction
+
+Supplier --> [Inventory Module] : Deliver Goods
+[Inventory Module] --> DB : Update stock
+[Inventory Module] --> [Finance Module] : Send Invoice
+[Finance Module] --> BC : Record financial tx
+
+FinanceDept --> [Finance Module] : Payment processing
+[Finance Module] --> DB : Update financials
+[Finance Module] --> BC : Record immutable ledger
+
+[AI/ML Module] --> DB : Analyze ERP data
+[AI/ML Module] --> BC : Validate against blockchain
+[AI/ML Module] --> [Sales Module] : Forecast demand
+[AI/ML Module] --> [Inventory Module] : Reorder recommendations
+
+@enduml

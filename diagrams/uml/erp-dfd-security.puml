@@ -1,0 +1,59 @@
+@startuml
+title TriggerIQ ERP - DFD Level 1 (Security Flows)
+
+' External entities
+actor Customer
+actor Supplier
+actor FinanceDept
+
+' Security Components
+rectangle "Identity Provider (IdP)\n(Keycloak / Auth0 / OIDC)" as IdP
+cloud "Security Services" {
+  [RBAC Service]
+  [Encryption Service]
+  [Audit & Logging]
+}
+
+' ERP Modules
+rectangle "ERP System" {
+  [Sales Module]
+  [Inventory Module]
+  [Finance Module]
+  [AI/ML Module]
+}
+
+' Data stores
+database "ERP Database\n(Encrypted PostgreSQL)" as DB
+collections "Blockchain Ledger\n(Immutable + Encrypted)" as BC
+
+' --- Security Flows ---
+Customer --> IdP : Login Request
+Supplier --> IdP : Login Request
+FinanceDept --> IdP : Login Request
+
+IdP --> Customer : Token (JWT/OAuth2)
+IdP --> Supplier : Token (JWT/OAuth2)
+IdP --> FinanceDept : Token (JWT/OAuth2)
+
+' Tokens to ERP
+Customer --> [Sales Module] : API call w/ Token
+Supplier --> [Inventory Module] : API call w/ Token
+FinanceDept --> [Finance Module] : API call w/ Token
+
+[Sales Module] --> [RBAC Service] : Validate Role
+[Inventory Module] --> [RBAC Service] : Validate Role
+[Finance Module] --> [RBAC Service] : Validate Role
+[AI/ML Module] --> [RBAC Service] : Validate Role
+
+' Data Encryption & Integrity
+[Sales Module] --> [Encryption Service] : Encrypt order data
+[Finance Module] --> [Encryption Service] : Encrypt invoices
+[Inventory Module] --> [Encryption Service] : Encrypt stock updates
+
+DB --> [Encryption Service] : Encrypted storage
+[Encryption Service] --> DB : Decrypt on read
+
+BC --> [Audit & Logging] : Immutable transaction log
+[ERP System] --> [Audit & Logging] : Usage logs
+
+@enduml
