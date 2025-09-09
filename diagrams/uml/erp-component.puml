@@ -1,0 +1,28 @@
+@startuml
+title TriggerIQ ERP - Component Architecture
+
+component "TriggerIQ ERP Core\n(JHipster Hexagonal)" as ERP
+database "ERP Database\n(Postgres/MySQL)" as DB
+collections "Blockchain Ledger\n(Hyperledger/Ethereum)" as BC
+component "AI/ML Layer\n(Forecasting, Chatbot, Recommender)" as AI
+
+folder "Business Processes" {
+  [Sales & CRM]
+  [Inventory & Warehouse]
+  [Finance & Accounting]
+  [Production & Supply Chain]
+  [HR & Workforce]
+}
+
+ERP --> DB : CRUD Ops
+ERP --> BC : Hashes & Smart Contracts
+AI --> DB : Training + Predictions
+AI --> ERP : Recommendations & Automation
+
+[Sales & CRM] --> ERP
+[Inventory & Warehouse] --> ERP
+[Finance & Accounting] --> ERP
+[Production & Supply Chain] --> ERP
+[HR & Workforce] --> ERP
+
+@enduml

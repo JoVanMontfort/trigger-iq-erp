@@ -1,0 +1,43 @@
+@startuml
+actor "Warehouse Staff" as WS
+actor "Sales Rep" as SR
+actor "Purchasing Manager" as PM
+actor "Production Planner" as PP
+participant "TriggerIQ ERP Core" as ERP
+database "ERP Database" as DB
+collections "Blockchain Ledger" as BC
+participant "AI/ML Layer" as AI
+participant "Manager Dashboard" as Dash
+participant "Supplier System" as Supplier
+
+== Stock Update ==
+WS -> ERP : Add stock: +50 units Product X
+ERP -> DB : Save transaction details
+ERP -> BC : Write hash + Smart Contract
+DB -> AI : Update training data
+AI -> ERP : Predict reorder needs
+ERP -> Dash : Update inventory KPIs
+
+== Sales Order ==
+SR -> ERP : Create new sales order
+ERP -> DB : Save order + customer data
+ERP -> BC : Record immutable sales contract
+DB -> AI : Update demand forecast
+AI -> ERP : Suggest production plan
+ERP -> Dash : Show order fulfillment status
+
+== Supplier Payment ==
+PM -> ERP : Approve supplier invoice
+ERP -> DB : Store invoice & payment record
+ERP -> BC : Trigger smart contract payment
+ERP -> Supplier : Send payment confirmation
+ERP -> Dash : Update finance KPIs
+
+== Production Scheduling ==
+PP -> ERP : Request production run
+ERP -> DB : Log production order
+AI -> ERP : Optimize scheduling
+ERP -> BC : Record production batch (traceability)
+ERP -> Dash : Display production status
+
+@enduml
