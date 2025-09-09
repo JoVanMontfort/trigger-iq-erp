@@ -1,0 +1,59 @@
+@startuml
+title TriggerIQ ERP - Deployment Architecture
+
+node "Cloud Infrastructure" {
+
+  node "Kubernetes Cluster" {
+    node "Backend Services" {
+      [ERP Core Service]
+      [CRM Service]
+      [Inventory Service]
+      [Finance Service]
+      [AI/ML Service]
+    }
+
+    node "Frontend" {
+      [Web UI]
+      [Mobile App]
+    }
+
+    node "API Gateway" {
+      [GraphQL/REST API]
+    }
+  }
+
+  database "ERP Database\n(PostgreSQL)" as DB
+  collections "Blockchain Network\n(Hyperledger / Ethereum)" as BC
+
+  node "DevOps CI/CD" {
+    [GitHub Actions]
+    [Docker Registry]
+    [Monitoring & Logging\n(Prometheus, ELK)]
+  }
+}
+
+' Connections
+[Web UI] --> [API Gateway]
+[Mobile App] --> [API Gateway]
+
+[API Gateway] --> [ERP Core Service]
+[API Gateway] --> [CRM Service]
+[API Gateway] --> [Inventory Service]
+[API Gateway] --> [Finance Service]
+[API Gateway] --> [AI/ML Service]
+
+[ERP Core Service] --> DB
+[CRM Service] --> DB
+[Inventory Service] --> DB
+[Finance Service] --> DB
+
+[ERP Core Service] --> BC
+[Finance Service] --> BC
+
+[AI/ML Service] --> DB
+[AI/ML Service] --> BC
+
+[GitHub Actions] --> [Docker Registry]
+[GitHub Actions] --> [Kubernetes Cluster]
+
+@enduml

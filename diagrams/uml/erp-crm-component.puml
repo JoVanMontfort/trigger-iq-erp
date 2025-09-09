@@ -1,0 +1,38 @@
+@startuml
+title ERP + CRM Integration - TriggerIQ ERP
+
+component "TriggerIQ ERP Core\n(JHipster Hexagonal)" as ERP
+database "ERP Database" as DB
+collections "Blockchain Ledger" as BC
+component "AI/ML Layer" as AI
+
+package "CRM (Customer Relationship Management)" {
+  [Sales Management]
+  [Marketing Automation]
+  [Customer Service & Support]
+}
+
+package "ERP Modules" {
+  [Inventory & Warehouse]
+  [Finance & Accounting]
+  [Production & Supply Chain]
+  [HR & Workforce]
+}
+
+' CRM flows
+[Sales Management] --> ERP : Create Orders\nTrack Opportunities
+[Marketing Automation] --> ERP : Campaign Data\nLead Scoring
+[Customer Service & Support] --> ERP : Tickets\nCustomer History
+
+' ERP internal flows
+ERP --> [Inventory & Warehouse] : Check Stock\nUpdate Levels
+ERP --> [Finance & Accounting] : Invoicing\nPayments
+ERP --> [Production & Supply Chain] : Trigger Work Orders
+ERP --> [HR & Workforce] : Assign Resources
+
+' Core integrations
+ERP --> DB : CRUD Data
+ERP --> BC : Immutable Logs\nSmart Contracts
+AI --> ERP : Recommendations\nForecasting
+
+@enduml
