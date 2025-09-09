@@ -1,0 +1,1 @@
+package damnosol.triggeriq.erp.core.domain.service;

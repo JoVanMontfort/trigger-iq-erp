@@ -13,6 +13,50 @@ AI and blockchain integration. It serves as the **blueprint** for implementation
 - `diagrams/uml/triggeriq-erp-deployment.puml` → System deployment diagram (Backend, Frontend, Database, Blockchain nodes, AI
   services).
 - `docs/` → Supporting documentation, architecture notes, API specifications.
+```
+triggeriq-erp/
+├── pom.xml                  # Parent POM (dependency + plugin mgmt)
+│
+├── erp-core/                # Domain + Application layer (business logic)
+│   ├── pom.xml
+│   └── src/main/java/com/triggeriq/erp/core/
+│       ├── application/
+│       │   ├── service/     # Application services
+│       │   ├── dto/         # Internal DTOs
+│       │   └── port/        # Ports (in/out)
+│       │       ├── in/
+│       │       └── out/
+│       └── domain/
+│           ├── model/       # Entities/Aggregates
+│           ├── repository/  # Repository interfaces
+│           └── service/     # Pure domain services
+│
+├── erp-infra/               # Infrastructure implementations
+│   ├── pom.xml
+│   └── src/main/java/com/triggeriq/erp/infra/
+│       ├── persistence/     # JPA/Hibernate impls
+│       ├── ai/              # AI integrations
+│       ├── blockchain/      # Blockchain ledger adapters
+│       ├── messaging/       # Kafka/RabbitMQ adapters
+│       └── config/          # Spring/Data configs
+│
+├── erp-adapters/            # Driving adapters (REST, CLI, UI)
+│   ├── pom.xml
+│   └── src/main/java/com/triggeriq/erp/adapters/
+│       ├── web/             # REST/GraphQL controllers
+│       ├── cli/             # CLI commands
+│       └── ui/              # UI connectors
+│
+├── erp-web/                 # Main Spring Boot entrypoint
+│   ├── pom.xml
+│   └── src/main/java/com/triggeriq/erp/web/
+│       └── TriggerIqErpApplication.java
+│
+└── docs/                    # Documentation
+├── design/              # UML/PlantUML diagrams
+├── architecture.md
+└── api-spec.md
+```
 
 ---
 
