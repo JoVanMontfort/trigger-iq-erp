@@ -1,0 +1,72 @@
+@startuml
+title TriggerIQ ERP - High-Level Architecture with CBAM
+
+' Participants
+rectangle "ERP Core Modules" as ERP {
+  [Inventory Module]
+  [Sales Module]
+  [Finance Module]
+  [Procurement Module]
+}
+
+rectangle "AI / ML" as AI {
+  [AI Recommender]
+  [Chatbot]
+}
+
+rectangle "Blockchain Ledger" as BC {
+  [Immutable Transaction Log]
+  [Smart Contracts]
+}
+
+rectangle "External Systems" as EXT {
+  [Suppliers]
+  [Customers]
+  [Banks / Payment Gateways]
+}
+
+rectangle "CBAM Evaluation Layer" as CBAM {
+  [Cost Analysis]
+  [Benefit Assessment]
+  [Trade-off Decisions]
+}
+
+database "ERP Database" as DB
+
+cloud "CI/CD & Monitoring" as CI
+
+' --- High-Level Flow ---
+EXT --> ERP: Orders / Goods / Payments
+ERP --> DB: Store transactions, inventory, invoices
+ERP --> BC: Record transactions / smart contracts
+AI --> ERP: Forecast, recommendations
+ERP --> AI: Provide ERP data
+
+' --- CBAM Layer ---
+ERP --> CBAM: Send performance & cost metrics
+AI --> CBAM: Send predictions & ROI estimates
+CBAM --> ERP: Inform prioritization & trade-offs
+
+ERP --> CI: Logs, monitoring
+BC --> CI: Blockchain audit logs
+
+' Notes
+note right of CBAM
+CBAM continuously evaluates:
+- Cost of features
+- Benefit of automation
+- ROI of AI + Blockchain
+- Security trade-offs
+end note
+
+note left of AI
+AI forecasts demand, predicts trends,
+recommends inventory & pricing
+end note
+
+note left of BC
+Blockchain ensures immutability
+and traceable transactions
+end note
+
+@enduml
