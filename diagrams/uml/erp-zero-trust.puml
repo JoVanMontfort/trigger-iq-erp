@@ -1,0 +1,63 @@
+@startuml
+title TriggerIQ ERP - Zero Trust Security Model
+
+cloud "Identity Provider (IdP)\n(Keycloak / Auth0 / OIDC)" as IdP
+cloud "Zero Trust Policy Engine" as ZTPolicy
+cloud "Monitoring & SIEM\n(ELK / Splunk / Prometheus)" as SIEM
+
+actor Customer
+actor Supplier
+actor FinanceDept
+
+rectangle "ERP System" {
+  [Sales Module]
+  [Inventory Module]
+  [Finance Module]
+  [AI/ML Module]
+}
+
+database "ERP Database\n(Encrypted PostgreSQL)" as DB
+collections "Blockchain Ledger\n(Immutable + Encrypted)" as BC
+
+' --- User Access ---
+Customer --> IdP : Authenticate
+Supplier --> IdP : Authenticate
+FinanceDept --> IdP : Authenticate
+
+IdP --> Customer : Token (short-lived)
+IdP --> Supplier : Token (short-lived)
+IdP --> FinanceDept : Token (short-lived)
+
+' --- Service-to-Service Access ---
+[Sales Module] --> ZTPolicy : Verify token & role
+[Inventory Module] --> ZTPolicy : Verify token & role
+[Finance Module] --> ZTPolicy : Verify token & role
+[AI/ML Module] --> ZTPolicy : Verify token & role
+
+' --- Data Access ---
+[Sales Module] --> DB : Encrypted query
+[Finance Module] --> DB : Encrypted query
+[Inventory Module] --> DB : Encrypted update
+DB --> ZTPolicy : Check data access rules
+
+' --- Blockchain Access ---
+[Sales Module] --> BC : Record transaction
+[Finance Module] --> BC : Record payment
+[AI/ML Module] --> BC : Validate integrity
+BC --> ZTPolicy : Verify smart contract policy
+
+' --- Monitoring ---
+[ERP System] --> SIEM : Logs, metrics, alerts
+BC --> SIEM : Transaction logs
+DB --> SIEM : Access logs
+ZTPolicy --> SIEM : Policy decision logs
+
+note bottom
+Zero Trust Principles:
+- Never trust, always verify
+- Least privilege access
+- Encrypt everything
+- Continuous monitoring
+end note
+
+@enduml

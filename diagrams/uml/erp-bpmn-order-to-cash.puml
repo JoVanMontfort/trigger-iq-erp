@@ -1,0 +1,29 @@
+@startuml
+'!include <bpmn>
+
+title ERP BPMN - Order-to-Cash
+
+participant Customer
+participant "ERP System" as ERP
+participant Finance
+
+' --- Flow ---
+Customer -> ERP: Place Order
+ERP -> ERP: Validate Order
+ERP -> ERP: Check Inventory
+alt Stock Available
+    ERP -> ERP: Create Invoice
+    ERP -> Customer: Send Invoice
+else Stock Not Available
+    ERP -> Customer: Notify Out of Stock
+end
+
+ERP -> Blockchain: Record Transaction
+ERP -> DB: Update ERP Database
+
+Customer -> Finance: Payment
+Finance -> ERP: Payment Confirmation
+
+ERP -> ERP: Close Order
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+'!include <bpmn>
+
+title ERP BPMN - Procure-to-Pay
+
+participant ERP
+participant Supplier
+participant Finance
+
+' --- Flow ---
+ERP -> ERP: Detect Low Stock
+ERP -> ERP: Create Purchase Requisition
+ERP -> Supplier: Send Purchase Order
+
+Supplier -> Supplier: Prepare Goods
+Supplier -> Supplier: Ship Goods
+Supplier -> ERP: Deliver Goods + Invoice
+
+ERP -> ERP: Update Inventory
+ERP -> Blockchain: Record Transaction
+ERP -> Finance: Forward Invoice
+
+Finance -> Finance: Process Payment
+Finance -> Supplier: Send Payment Confirmation
+
+@enduml

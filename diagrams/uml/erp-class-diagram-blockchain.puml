@@ -1,0 +1,118 @@
+@startuml
+title TriggerIQ ERP + Blockchain - Class Diagram
+
+' --- ERP Core ---
+class Product {
+  +String name
+  +String SKU
+  +int quantity
+  +float price
+  +getStockLevel()
+  +updateStock(int)
+}
+
+class Customer {
+  +String name
+  +String email
+  +String phone
+  +List<Order> orders
+  +addOrder(Order)
+}
+
+class Order {
+  +int orderNumber
+  +Date orderDate
+  +List<Product> products
+  +float totalAmount
+  +Customer customer
+  +createInvoice()
+  +updateStatus()
+}
+
+class Invoice {
+  +int invoiceNumber
+  +Date invoiceDate
+  +float totalAmount
+  +Order order
+  +Payment payment
+}
+
+class Payment {
+  +int paymentId
+  +float amount
+  +Date paymentDate
+  +String method
+  +Invoice invoice
+}
+
+' --- ERP Modules ---
+class InventoryModule {
+  +List<Product> products
+  +checkStock(Product)
+  +updateStock(Product, int)
+}
+
+class SalesModule {
+  +List<Order> orders
+  +createOrder(Customer, List<Product>)
+  +generateInvoice(Order)
+}
+
+class FinanceModule {
+  +List<Invoice> invoices
+  +processPayment(Payment)
+}
+
+' --- AI/ML ---
+class AIRecommender {
+  +predictDemand(Product)
+  +suggestReorder(Product)
+}
+
+class Chatbot {
+  +answerCustomerQuery(String)
+  +provideOrderStatus(Order)
+}
+
+' --- Blockchain ---
+class BlockchainTransaction {
+  +String transactionId
+  +Date timestamp
+  +String type
+  +float amount
+  +recordTransaction()
+}
+
+class SmartContract {
+  +String contractId
+  +String rules
+  +executeContract()
+}
+
+class AuditLog {
+  +String logId
+  +Date timestamp
+  +String event
+  +verifyIntegrity()
+}
+
+' --- Relationships ---
+Customer "1" --> "*" Order
+Order "1" --> "1" Invoice
+Invoice "1" --> "1" Payment
+InventoryModule "1" --> "*" Product
+SalesModule "1" --> "*" Order
+FinanceModule "1" --> "*" Invoice
+
+AIRecommender --> Product
+Chatbot --> Customer
+Chatbot --> Order
+
+' ERP <-> Blockchain integration
+FinanceModule --> BlockchainTransaction
+InventoryModule --> BlockchainTransaction
+BlockchainTransaction --> SmartContract
+BlockchainTransaction --> AuditLog
+SmartContract --> AuditLog
+
+@enduml
