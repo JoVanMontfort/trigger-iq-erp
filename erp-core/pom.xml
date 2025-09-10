@@ -14,6 +14,12 @@
     <name>ERP Core (Domain + Application)</name>
 
     <dependencies>
+        <!-- Spring annotations for @Service, @Component -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
         <!-- No Spring dependencies here – keep pure Java (DDD/hexagonal) -->
         <dependency>
             <groupId>org.projectlombok</groupId>

@@ -3,7 +3,9 @@ package damnosol.triggeriq.erp.web;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "damnosol.triggeriq.erp")
+@SpringBootApplication(scanBasePackages = "damnosol.triggeriq.erp.infra.storage," +
+        "damnosol.triggeriq.erp.core.application.service," +
+        "damnosol.triggeriq.erp.adapters.web.controller")
 public class TriggerIqErpApplication {
 
     public static void main(String[] args) {
