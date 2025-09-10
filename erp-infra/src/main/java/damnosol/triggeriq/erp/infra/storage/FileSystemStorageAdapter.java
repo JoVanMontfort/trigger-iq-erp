@@ -2,7 +2,6 @@ package damnosol.triggeriq.erp.infra.storage;
 
 import damnosol.triggeriq.erp.core.application.port.out.FileStoragePort;
 import damnosol.triggeriq.erp.core.domain.model.Document;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -18,7 +17,7 @@ public class FileSystemStorageAdapter implements FileStoragePort {
 
     private final Path storageRoot;
 
-    public FileSystemStorageAdapter(@Value("${storage.path}") Path storageRoot) {
+    public FileSystemStorageAdapter(Path storageRoot) {
         this.storageRoot = storageRoot;
     }
 
@@ -43,5 +42,11 @@ public class FileSystemStorageAdapter implements FileStoragePort {
             }
         }
         return storedDocs;
+    }
+
+    public Path saveFile(String filename, byte[] content) throws IOException {
+        Path destination = storageRoot.resolve(filename);
+        Files.write(destination, content);
+        return destination;
     }
 }
