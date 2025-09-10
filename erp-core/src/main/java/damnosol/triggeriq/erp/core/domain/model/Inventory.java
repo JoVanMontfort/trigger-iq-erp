@@ -3,7 +3,7 @@ package damnosol.triggeriq.erp.core.domain.model;
 
 public record Inventory(
         Long id,
-        Product product,
+        long product,
         int quantity,
         int minThreshold
 ) {
