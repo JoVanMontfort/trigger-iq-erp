@@ -1,5 +1,6 @@
 package damnosol.triggeriq.erp.infra.parser;
 
+import damnosol.triggeriq.erp.core.application.port.out.PdfParserPort;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.slf4j.Logger;
@@ -10,7 +11,7 @@ import java.io.File;
 import java.nio.file.Paths;
 
 @Component
-public class PdfParserAdapter {
+public class PdfParserAdapter implements PdfParserPort {
 
     private static final Logger log = LoggerFactory.getLogger(PdfParserAdapter.class);
 

@@ -1,5 +1,6 @@
 package damnosol.triggeriq.erp.infra.parser;
 
+import damnosol.triggeriq.erp.core.application.port.out.ExcelParserPort;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +11,7 @@ import java.io.FileInputStream;
 import java.nio.file.Paths;
 
 @Component
-public class ExcelParserAdapter {
+public class ExcelParserAdapter implements ExcelParserPort {
 
     private static final Logger log = LoggerFactory.getLogger(ExcelParserAdapter.class);
 
